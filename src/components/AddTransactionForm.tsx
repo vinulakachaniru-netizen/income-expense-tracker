@@ -1,0 +1,160 @@
+"use client";
+
+import { Plus } from "lucide-react";
+import { FormEvent, useState } from "react";
+import { EXPENSE_CATEGORIES } from "@/types/transaction";
+import type { TransactionType } from "@/types/transaction";
+
+export interface TransactionFormData {
+  description: string;
+  amount: string;
+  type: TransactionType;
+  category: string;
+  date: string;
+}
+
+interface AddTransactionFormProps {
+  onSubmit: (data: TransactionFormData) => void;
+}
+
+function todayISO(): string {
+  return new Date().toISOString().split("T")[0];
+}
+
+export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
+  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
+  const [type, setType] = useState<TransactionType>("expense");
+  const [category, setCategory] = useState(EXPENSE_CATEGORIES[0]);
+  const [date, setDate] = useState(todayISO);
+  const [error, setError] = useState("");
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError("");
+
+    const parsed = parseFloat(amount);
+    if (!description.trim()) {
+      setError("Please enter a description.");
+      return;
+    }
+    if (isNaN(parsed) || parsed <= 0) {
+      setError("Please enter a valid amount in LKR.");
+      return;
+    }
+
+    onSubmit({ description, amount, type, category, date });
+    setDescription("");
+    setAmount("");
+    setType("expense");
+    setCategory(EXPENSE_CATEGORIES[0]);
+    setDate(todayISO());
+  }
+
+  return (
+    <section className="rounded-2xl border border-teal/10 bg-white p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-slate-800">Add Transaction</h2>
+      <p className="mt-1 text-sm text-slate-500">
+        Record income or expenses in Sri Lankan Rupees.
+      </p>
+
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <div className="grid grid-cols-2 gap-2 rounded-xl bg-slate-50 p-1">
+          {(["expense", "income"] as TransactionType[]).map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => setType(option)}
+              className={`rounded-lg px-4 py-2.5 text-sm font-medium capitalize transition-colors ${
+                type === option
+                  ? "bg-teal text-white shadow-sm"
+                  : "text-slate-600 hover:text-teal"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+
+        <div>
+          <label htmlFor="description" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Description
+          </label>
+          <input
+            id="description"
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="e.g., Lunch at Pilawoos"
+            className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-teal focus:ring-2 focus:ring-teal/20"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="amount" className="mb-1.5 block text-sm font-medium text-slate-700">
+              Amount (LKR)
+            </label>
+            <input
+              id="amount"
+              type="number"
+              min="0"
+              step="0.01"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0.00"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-teal focus:ring-2 focus:ring-teal/20"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="date" className="mb-1.5 block text-sm font-medium text-slate-700">
+              Date
+            </label>
+            <input
+              id="date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none transition-colors focus:border-teal focus:ring-2 focus:ring-teal/20"
+            />
+          </div>
+        </div>
+
+        {type === "expense" && (
+          <div>
+            <label htmlFor="category" className="mb-1.5 block text-sm font-medium text-slate-700">
+              Category
+            </label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value as typeof category)}
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors focus:border-teal focus:ring-2 focus:ring-teal/20"
+            >
+              {EXPENSE_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {error && (
+          <p className="text-sm text-red-500" role="alert">
+            {error}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-teal px-4 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-teal-dark active:scale-[0.99]"
+        >
+          <Plus className="h-4 w-4" strokeWidth={2.5} />
+          Add Transaction
+        </button>
+      </form>
+    </section>
+  );
+}
