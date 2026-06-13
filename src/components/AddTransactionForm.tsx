@@ -129,9 +129,9 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
   }
 
   return (
-    <section className="rounded-2xl border border-white/5 bg-white/5 p-6 shadow-xl backdrop-blur-md relative">
+    <section className="rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 p-6 shadow-sm dark:shadow-xl dark:backdrop-blur-md relative">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Add Transaction</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Add Transaction</h2>
         
         {/* Hidden file input */}
         <input 
@@ -147,7 +147,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isScanning}
-          className="flex items-center gap-1.5 rounded-lg bg-teal/20 px-3 py-1.5 text-sm font-medium text-teal-light transition-colors hover:bg-teal/30 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-lg bg-teal/10 dark:bg-teal/20 px-3 py-1.5 text-sm font-medium text-teal-dark dark:text-teal-light transition-colors hover:bg-teal/20 dark:hover:bg-teal/30 disabled:opacity-50"
         >
           {isScanning ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -157,12 +157,12 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
           {isScanning ? "Scanning..." : "Scan Receipt"}
         </button>
       </div>
-      <p className="mt-1 text-sm text-slate-400">
+      <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
         Record income or expenses in Sri Lankan Rupees.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-        <div className="grid grid-cols-2 gap-2 rounded-xl bg-slate-900/50 p-1">
+        <div className="grid grid-cols-2 gap-2 rounded-xl bg-slate-100 dark:bg-slate-900/50 p-1">
           {(["expense", "income"] as TransactionType[]).map((option) => (
             <button
               key={option}
@@ -171,7 +171,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
               className={`rounded-lg px-4 py-2.5 text-sm font-medium capitalize transition-colors ${
                 type === option
                   ? "bg-teal text-white shadow-sm"
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white dark:hover:bg-white/5"
               }`}
             >
               {option}
@@ -180,7 +180,7 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
         </div>
 
         <div>
-          <label htmlFor="description" className="mb-1.5 block text-sm font-medium text-slate-300">
+          <label htmlFor="description" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Description
           </label>
           <input
@@ -189,13 +189,13 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="e.g., Lunch at Pilawoos"
-            className="w-full rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-teal focus:ring-2 focus:ring-teal/20"
+            className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-teal focus:ring-2 focus:ring-teal/20"
           />
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="amount" className="mb-1.5 block text-sm font-medium text-slate-300">
+            <label htmlFor="amount" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Amount (LKR)
             </label>
             <input
@@ -206,12 +206,12 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
-              className="w-full rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-slate-500 focus:border-teal focus:ring-2 focus:ring-teal/20"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-teal focus:ring-2 focus:ring-teal/20"
             />
           </div>
 
           <div>
-            <label htmlFor="date" className="mb-1.5 block text-sm font-medium text-slate-300">
+            <label htmlFor="date" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Date
             </label>
             <input
@@ -219,21 +219,21 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-teal focus:ring-2 focus:ring-teal/20"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900/50 px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-colors focus:border-teal focus:ring-2 focus:ring-teal/20"
             />
           </div>
         </div>
 
         {type === "expense" && (
           <div>
-            <label htmlFor="category" className="mb-1.5 block text-sm font-medium text-slate-300">
+            <label htmlFor="category" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
               Category
             </label>
             <select
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value as typeof category)}
-              className="w-full rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-teal focus:ring-2 focus:ring-teal/20"
+              className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-900 px-4 py-3 text-sm text-slate-900 dark:text-white outline-none transition-colors focus:border-teal focus:ring-2 focus:ring-teal/20"
             >
               {EXPENSE_CATEGORIES.map((cat) => (
                 <option key={cat} value={cat}>

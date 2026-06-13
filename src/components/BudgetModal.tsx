@@ -68,7 +68,7 @@ export function BudgetModal({ budget, onSave }: BudgetModalProps) {
         type="button"
         aria-label="Budget Settings"
         onClick={() => setOpen(true)}
-        className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white transition-colors hover:bg-white/25 active:scale-95"
+        className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900/5 dark:bg-white/15 text-slate-700 dark:text-white transition-colors hover:bg-slate-900/10 dark:hover:bg-white/25 active:scale-95"
       >
         <Settings className="h-5 w-5" strokeWidth={2} />
       </button>
@@ -84,17 +84,17 @@ export function BudgetModal({ budget, onSave }: BudgetModalProps) {
         >
           <div
             ref={dialogRef}
-            className="w-full max-w-md rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
+            className="w-full max-w-md rounded-t-3xl bg-white dark:bg-slate-900 p-6 shadow-2xl sm:rounded-3xl border dark:border-white/10 border-transparent"
           >
             {/* Modal header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10 text-teal">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal/10 dark:bg-teal/20 text-teal-dark dark:text-teal-light">
                   <Settings className="h-5 w-5" strokeWidth={2} />
                 </span>
                 <h2
                   id="budget-modal-title"
-                  className="text-lg font-semibold text-slate-800"
+                  className="text-lg font-semibold text-slate-800 dark:text-white"
                 >
                   Monthly Budget
                 </h2>
@@ -103,20 +103,20 @@ export function BudgetModal({ budget, onSave }: BudgetModalProps) {
                 type="button"
                 aria-label="Close settings"
                 onClick={() => setOpen(false)}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 dark:hover:text-slate-300"
               >
                 <X className="h-5 w-5" strokeWidth={2} />
               </button>
             </div>
 
-            <p className="mt-3 text-sm text-slate-500">
+            <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
               Set a monthly spending limit. You&apos;ll get alerted at 80% and
               100% of your budget.
             </p>
 
             {/* Current budget pill */}
             {budget !== null && (
-              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal-light px-3 py-1.5 text-sm text-teal">
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal/5 dark:bg-teal-light/10 px-3 py-1.5 text-sm text-teal-dark dark:text-teal-light">
                 <span className="font-medium">Current:</span>
                 <span className="font-semibold">{formatLKR(budget)}</span>
               </div>
@@ -126,12 +126,12 @@ export function BudgetModal({ budget, onSave }: BudgetModalProps) {
             <div className="mt-5">
               <label
                 htmlFor="budget-input"
-                className="block text-sm font-medium text-slate-700"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Monthly Budget (LKR)
               </label>
               <div className="relative mt-2">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-medium text-slate-400 dark:text-slate-500">
                   Rs.
                 </span>
                 <input
@@ -144,7 +144,7 @@ export function BudgetModal({ budget, onSave }: BudgetModalProps) {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && isValid && handleSave()}
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-teal focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal/20 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900/50 py-3 pl-10 pr-4 text-sm text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-teal focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-teal/20 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
               {!isValid && (
@@ -160,7 +160,7 @@ export function BudgetModal({ budget, onSave }: BudgetModalProps) {
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 active:scale-[0.98]"
+                  className="flex-1 rounded-xl border border-slate-200 dark:border-white/10 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 active:scale-[0.98]"
                 >
                   Remove Budget
                 </button>
