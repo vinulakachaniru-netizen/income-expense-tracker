@@ -12,9 +12,8 @@ export function FinancialHealthCard({ transactions, budgets }: Props) {
   const health = useFinancialHealth(transactions, budgets);
 
   // SVG Gauge Calculations
-  const radius = 40;
-  const circumference = Math.PI * radius; // semi-circle
   const percent = Math.max(0, Math.min(100, ((health.score - 300) / 700) * 100));
+  const circumference = 125.66; // Math.PI * 40
   const offset = circumference - (percent / 100) * circumference;
 
   let scoreColor = "text-emerald-500";
@@ -47,26 +46,20 @@ export function FinancialHealthCard({ transactions, budgets }: Props) {
 
       <div className="mt-6 flex flex-col md:flex-row items-center gap-6">
         {/* Gauge Chart */}
-        <div className="relative flex shrink-0 items-end justify-center w-32 h-16">
-          <svg className="absolute top-0 h-32 w-32 -rotate-180 transform" viewBox="0 0 100 100">
+        <div className="relative flex shrink-0 items-end justify-center w-32 h-16 mb-4 md:mb-0">
+          <svg className="w-full h-full overflow-visible" viewBox="0 0 100 50">
             {/* Background arc */}
-            <circle
-              cx="50"
-              cy="50"
-              r={radius}
+            <path
+              d="M 10 50 A 40 40 0 0 1 90 50"
               fill="transparent"
               stroke="currentColor"
               strokeWidth="10"
-              strokeDasharray={circumference}
-              strokeDashoffset={0}
               className="stroke-slate-100 dark:stroke-slate-800"
               strokeLinecap="round"
             />
             {/* Value arc */}
-            <circle
-              cx="50"
-              cy="50"
-              r={radius}
+            <path
+              d="M 10 50 A 40 40 0 0 1 90 50"
               fill="transparent"
               stroke="currentColor"
               strokeWidth="10"
@@ -76,11 +69,11 @@ export function FinancialHealthCard({ transactions, budgets }: Props) {
               strokeLinecap="round"
             />
           </svg>
-          <div className="absolute bottom-0 left-0 right-0 text-center">
-            <span className={`text-3xl font-black tracking-tighter ${scoreColor}`}>
+          <div className="absolute bottom-0 left-0 right-0 text-center translate-y-3">
+            <span className={`text-3xl font-black tracking-tighter leading-none ${scoreColor}`}>
               {health.score}
             </span>
-            <span className="block text-[10px] uppercase tracking-widest text-slate-400">
+            <span className="block text-[10px] uppercase tracking-widest text-slate-400 mt-0.5">
               Score
             </span>
           </div>
