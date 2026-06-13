@@ -56,17 +56,20 @@ export function AIFinancialAdvisor({ transactions, budgets, goal }: Props) {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to get response");
-
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to get response");
+      }
+
       setMessages((prev) => [...prev, { role: "ai", content: data.text }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       setMessages((prev) => [
         ...prev,
         {
           role: "ai",
-          content: "Sorry, I'm having trouble connecting to the network right now. Please try again later.",
+          content: error.message || "Sorry, I'm having trouble connecting to the network right now. Please try again later.",
         },
       ]);
     } finally {
@@ -162,12 +165,6 @@ export function AIFinancialAdvisor({ transactions, budgets, goal }: Props) {
 
       {/* Input Area */}
       <div className="border-t border-slate-100 dark:border-white/5 bg-white dark:bg-slate-900/50 p-4">
-        {!process.env.NEXT_PUBLIC_GEMINI_API_KEY && (
-           <div className="mb-3 flex items-center gap-2 rounded-lg bg-amber-50 dark:bg-amber-500/10 p-3 text-xs text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">
-             <AlertCircle className="h-4 w-4 shrink-0" />
-             <p>AI requires a valid GEMINI_API_KEY configured in your environment.</p>
-           </div>
-        )}
         <form
           onSubmit={(e) => {
             e.preventDefault();
