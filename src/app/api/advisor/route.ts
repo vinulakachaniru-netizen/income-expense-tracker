@@ -48,6 +48,28 @@ If the user asks about a purchase, look at their balances and budgets. If they a
     return NextResponse.json({ text: responseText });
   } catch (error: any) {
     console.error("Error in AI Advisor:", error);
+    
+    // If the model is not found, let's query the API to see what models this API key actually has access to!
+    if (error.message && error.message.includes("404") && error.message.includes("not found")) {
+      try {
+        const modelsRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${process.env.GEMINI_API_KEY}`);
+        const modelsData = await modelsRes.json();
+        if (modelsData && modelsData.models) {
+          const availableModels = modelsData.models
+            .filter((m: any) => m.supportedGenerationMethods.includes("generateContent"))
+            .map((m: any) => m.name.replace("models/", ""))
+            .join(", ");
+            
+          return NextResponse.json(
+            { error: `The requested model is not available for your API key. Available models for your key: ${availableModels}` },
+            { status: 500 }
+          );
+        }
+      } catch (e) {
+        // Fallback if the fetch fails
+      }
+    }
+
     return NextResponse.json(
       { error: error.message || "Failed to generate AI response." },
       { status: 500 }
