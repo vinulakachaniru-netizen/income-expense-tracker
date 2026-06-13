@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, PieChart, PlusCircle, List, TrendingUp, Settings } from "lucide-react";
+import { ArrowLeft, PieChart, PlusCircle, List, TrendingUp, Settings, RefreshCw, Sparkles } from "lucide-react";
 
 import { ActionsPanel } from "@/components/ActionsPanel";
 import { AddTransactionForm } from "@/components/AddTransactionForm";
+import { AIFinancialAdvisor } from "@/components/AIFinancialAdvisor";
 import { BIDashboard } from "@/components/BIDashboard";
 import { BudgetAlert } from "@/components/BudgetAlert";
+import { FinancialHealthCard } from "@/components/FinancialHealthCard";
 import { Header } from "@/components/Header";
 import { SpendingInsights } from "@/components/SpendingInsights";
+import { SubscriptionsDashboard } from "@/components/SubscriptionsDashboard";
 import { SummaryCards } from "@/components/SummaryCards";
 import { TransactionHistory } from "@/components/TransactionHistory";
 import { useUserSettings } from "@/hooks/useUserSettings";
@@ -22,7 +25,7 @@ interface ExpenseTrackerProps {
   userEmail: string;
 }
 
-type View = "home" | "overview" | "add" | "history" | "analytics" | "settings";
+type View = "home" | "overview" | "add" | "history" | "analytics" | "subscriptions" | "advisor" | "settings";
 
 export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
   const [currentView, setCurrentView] = useState<View>("home");
@@ -76,8 +79,10 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
       )}
 
       {currentView === "home" && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <button onClick={() => setCurrentView("overview")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+        <div className="space-y-6">
+          <FinancialHealthCard transactions={transactions} budgets={budgets} />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <button onClick={() => setCurrentView("overview")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
             <div className="h-14 w-14 rounded-full bg-teal/10 dark:bg-teal/20 text-teal-dark dark:text-teal-light flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                <PieChart className="h-7 w-7" />
             </div>
@@ -109,6 +114,22 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
             <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Spending insights, forecasts, and visual charts</p>
           </button>
 
+          <button onClick={() => setCurrentView("subscriptions")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+            <div className="h-14 w-14 rounded-full bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <RefreshCw className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Subscriptions</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Auto-detect bills and upcoming payments</p>
+          </button>
+
+          <button onClick={() => setCurrentView("advisor")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-transparent bg-gradient-to-br from-violet-500 to-fuchsia-500 hover:-translate-y-1 transition-all shadow-md hover:shadow-lg">
+            <div className="h-14 w-14 rounded-full bg-white/20 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform backdrop-blur-sm">
+               <Sparkles className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-white">Lanka AI Advisor</h3>
+            <p className="text-sm text-white/80 text-center mt-1">Chat with your data using Gemini 1.5</p>
+          </button>
+
           <button onClick={() => setCurrentView("settings")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
             <div className="h-14 w-14 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                <Settings className="h-7 w-7" />
@@ -116,6 +137,7 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Settings & Data</h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Clear data and export CSV statements</p>
           </button>
+          </div>
         </div>
       )}
 
@@ -156,6 +178,18 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
             onGoalSave={setGoal}
           />
           <BIDashboard transactions={transactions} budgets={budgets} onCategoryBudgetSave={setCategoryBudget} />
+        </div>
+      )}
+
+      {currentView === "subscriptions" && (
+        <div className="max-w-4xl mx-auto space-y-6">
+          <SubscriptionsDashboard transactions={transactions} currentBalance={balance} />
+        </div>
+      )}
+
+      {currentView === "advisor" && (
+        <div className="max-w-2xl mx-auto space-y-6">
+          <AIFinancialAdvisor transactions={transactions} budgets={budgets} goal={goal} />
         </div>
       )}
 
