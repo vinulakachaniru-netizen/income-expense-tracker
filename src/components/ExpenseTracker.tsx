@@ -49,7 +49,7 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-6 px-4 py-8 sm:px-6">
+    <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       <Header
         balance={balance}
         budget={budget}
@@ -57,44 +57,54 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
         userEmail={userEmail}
         onBudgetSave={setBudget}
       />
-      <SummaryCards
-        totalIncome={totals.income}
-        totalExpenses={totals.expenses}
-      />
+      
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+        {/* Left Column: Main Content */}
+        <div className="space-y-6 lg:col-span-8">
+          <SummaryCards
+            totalIncome={totals.income}
+            totalExpenses={totals.expenses}
+          />
 
-      {budget !== null && (
-        <BudgetAlert budget={budget} totalExpenses={totals.expenses} />
-      )}
+          <SpendingInsights
+            transactions={transactions}
+            totalIncome={totals.income}
+            totalExpenses={totals.expenses}
+            savingsGoal={goal}
+            onGoalSave={setGoal}
+          />
 
-      <AddTransactionForm
-        onSubmit={(data) => {
-          const transaction = createTransactionFromForm(data);
-          if (transaction) addTransaction(transaction);
-        }}
-      />
+          <BIDashboard
+            transactions={transactions}
+            budgets={budgets}
+            onCategoryBudgetSave={setCategoryBudget}
+          />
 
-      <SpendingInsights
-        transactions={transactions}
-        totalIncome={totals.income}
-        totalExpenses={totals.expenses}
-        savingsGoal={goal}
-        onGoalSave={setGoal}
-      />
+          <TransactionHistory
+            transactions={transactions}
+            onDelete={deleteTransaction}
+          />
+        </div>
 
-      <BIDashboard
-        transactions={transactions}
-        budgets={budgets}
-        onCategoryBudgetSave={setCategoryBudget}
-      />
+        {/* Right Column: Sidebar Actions */}
+        <div className="space-y-6 lg:col-span-4 lg:sticky lg:top-8">
+          {budget !== null && (
+            <BudgetAlert budget={budget} totalExpenses={totals.expenses} />
+          )}
 
-      <ActionsPanel
-        transactions={transactions}
-        onClearAll={clearAllTransactions}
-      />
-      <TransactionHistory
-        transactions={transactions}
-        onDelete={deleteTransaction}
-      />
+          <AddTransactionForm
+            onSubmit={(data) => {
+              const transaction = createTransactionFromForm(data);
+              if (transaction) addTransaction(transaction);
+            }}
+          />
+
+          <ActionsPanel
+            transactions={transactions}
+            onClearAll={clearAllTransactions}
+          />
+        </div>
+      </div>
     </div>
   );
 }
