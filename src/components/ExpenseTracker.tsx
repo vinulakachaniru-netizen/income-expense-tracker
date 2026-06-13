@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { ArrowLeft, PieChart, PlusCircle, List, TrendingUp, Settings } from "lucide-react";
+
 import { ActionsPanel } from "@/components/ActionsPanel";
 import { AddTransactionForm } from "@/components/AddTransactionForm";
 import { BIDashboard } from "@/components/BIDashboard";
@@ -19,7 +22,11 @@ interface ExpenseTrackerProps {
   userEmail: string;
 }
 
+type View = "home" | "overview" | "add" | "history" | "analytics" | "settings";
+
 export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
+  const [currentView, setCurrentView] = useState<View>("home");
+
   const {
     transactions,
     hydrated: txHydrated,
@@ -57,15 +64,90 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
         userEmail={userEmail}
         onBudgetSave={setBudget}
       />
-      
-      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
-        {/* Left Column: Main Content */}
-        <div className="space-y-6 lg:col-span-8">
-          <SummaryCards
-            totalIncome={totals.income}
-            totalExpenses={totals.expenses}
-          />
 
+      {currentView !== "home" && (
+        <button
+          onClick={() => setCurrentView("home")}
+          className="flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home
+        </button>
+      )}
+
+      {currentView === "home" && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <button onClick={() => setCurrentView("overview")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+            <div className="h-14 w-14 rounded-full bg-teal/10 dark:bg-teal/20 text-teal-dark dark:text-teal-light flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <PieChart className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Dashboard Overview</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Summary cards and budget alerts</p>
+          </button>
+          
+          <button onClick={() => setCurrentView("add")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+            <div className="h-14 w-14 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <PlusCircle className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Add Transaction</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Record expenses, incomes, or scan receipts</p>
+          </button>
+
+          <button onClick={() => setCurrentView("history")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+            <div className="h-14 w-14 rounded-full bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <List className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">History</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">View, search, and manage past transactions</p>
+          </button>
+
+          <button onClick={() => setCurrentView("analytics")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+            <div className="h-14 w-14 rounded-full bg-violet-100 dark:bg-violet-500/20 text-violet-600 dark:text-violet-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <TrendingUp className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Analytics & BI</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Spending insights, forecasts, and visual charts</p>
+          </button>
+
+          <button onClick={() => setCurrentView("settings")} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:-translate-y-1 transition-all shadow-sm hover:shadow-md dark:shadow-xl dark:backdrop-blur-md">
+            <div className="h-14 w-14 rounded-full bg-amber-100 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <Settings className="h-7 w-7" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Settings & Data</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 text-center mt-1">Clear data and export CSV statements</p>
+          </button>
+        </div>
+      )}
+
+      {currentView === "overview" && (
+        <div className="max-w-4xl mx-auto space-y-6">
+          <SummaryCards totalIncome={totals.income} totalExpenses={totals.expenses} />
+          {budget !== null && <BudgetAlert budget={budget} totalExpenses={totals.expenses} />}
+        </div>
+      )}
+
+      {currentView === "add" && (
+        <div className="max-w-2xl mx-auto space-y-6">
+          <AddTransactionForm
+            onSubmit={(data) => {
+              const transaction = createTransactionFromForm(data);
+              if (transaction) {
+                addTransaction(transaction);
+                setCurrentView("history");
+              }
+            }}
+          />
+        </div>
+      )}
+
+      {currentView === "history" && (
+        <div className="max-w-4xl mx-auto space-y-6">
+          <TransactionHistory transactions={transactions} onDelete={deleteTransaction} />
+        </div>
+      )}
+
+      {currentView === "analytics" && (
+        <div className="max-w-4xl mx-auto space-y-6">
           <SpendingInsights
             transactions={transactions}
             totalIncome={totals.income}
@@ -73,38 +155,15 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
             savingsGoal={goal}
             onGoalSave={setGoal}
           />
-
-          <BIDashboard
-            transactions={transactions}
-            budgets={budgets}
-            onCategoryBudgetSave={setCategoryBudget}
-          />
-
-          <TransactionHistory
-            transactions={transactions}
-            onDelete={deleteTransaction}
-          />
+          <BIDashboard transactions={transactions} budgets={budgets} onCategoryBudgetSave={setCategoryBudget} />
         </div>
+      )}
 
-        {/* Right Column: Sidebar Actions */}
-        <div className="space-y-6 lg:col-span-4 lg:sticky lg:top-8">
-          {budget !== null && (
-            <BudgetAlert budget={budget} totalExpenses={totals.expenses} />
-          )}
-
-          <AddTransactionForm
-            onSubmit={(data) => {
-              const transaction = createTransactionFromForm(data);
-              if (transaction) addTransaction(transaction);
-            }}
-          />
-
-          <ActionsPanel
-            transactions={transactions}
-            onClearAll={clearAllTransactions}
-          />
+      {currentView === "settings" && (
+        <div className="max-w-2xl mx-auto space-y-6">
+          <ActionsPanel transactions={transactions} onClearAll={clearAllTransactions} />
         </div>
-      </div>
+      )}
     </div>
   );
 }
