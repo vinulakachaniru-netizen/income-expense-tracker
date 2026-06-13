@@ -1,6 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
+// Allow this API route to run for up to 60 seconds (Vercel hobby limit)
+export const maxDuration = 60;
+
 // We use the new Gemini 1.5 Flash model which is fast and good at vision tasks
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
@@ -54,10 +57,10 @@ Keys required:
     const parsedData = JSON.parse(cleanedText);
 
     return NextResponse.json(parsedData);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error scanning receipt:", error);
     return NextResponse.json(
-      { error: "Failed to scan receipt. Please try again or enter manually." },
+      { error: error.message || "Failed to scan receipt." },
       { status: 500 }
     );
   }
