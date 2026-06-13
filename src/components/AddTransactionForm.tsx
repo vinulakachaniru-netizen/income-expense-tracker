@@ -1,7 +1,7 @@
 "use client";
 
-import { Plus } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { Plus, Camera, Loader2 } from "lucide-react";
+import { FormEvent, useRef, useState } from "react";
 import { EXPENSE_CATEGORIES } from "@/types/transaction";
 import type { TransactionType } from "@/types/transaction";
 
@@ -28,6 +28,52 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
   const [category, setCategory] = useState(EXPENSE_CATEGORIES[0]);
   const [date, setDate] = useState(todayISO);
   const [error, setError] = useState("");
+  const [isScanning, setIsScanning] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsScanning(true);
+    setError("");
+
+    try {
+      const formData = new FormData();
+      formData.append("receipt", file);
+
+      const res = await fetch("/api/scan-receipt", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to scan receipt");
+      }
+
+      const data = await res.json();
+      
+      // Populate form
+      if (data.description) setDescription(data.description);
+      if (data.amount) setAmount(data.amount);
+      if (data.category && EXPENSE_CATEGORIES.includes(data.category)) {
+        setCategory(data.category);
+        setType("expense");
+      }
+      if (data.date) setDate(data.date);
+      
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || "An error occurred while scanning the receipt.");
+    } finally {
+      setIsScanning(false);
+      // Reset file input so same file can be selected again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -52,8 +98,34 @@ export function AddTransactionForm({ onSubmit }: AddTransactionFormProps) {
   }
 
   return (
-    <section className="rounded-2xl border border-teal/10 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">Add Transaction</h2>
+    <section className="rounded-2xl border border-teal/10 bg-white p-6 shadow-sm relative">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-slate-800">Add Transaction</h2>
+        
+        {/* Hidden file input */}
+        <input 
+          type="file" 
+          accept="image/*" 
+          capture="environment" 
+          className="hidden" 
+          ref={fileInputRef}
+          onChange={handleFileUpload}
+        />
+        
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isScanning}
+          className="flex items-center gap-1.5 rounded-lg bg-teal/10 px-3 py-1.5 text-sm font-medium text-teal transition-colors hover:bg-teal/20 disabled:opacity-50"
+        >
+          {isScanning ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Camera className="h-4 w-4" />
+          )}
+          {isScanning ? "Scanning..." : "Scan Receipt"}
+        </button>
+      </div>
       <p className="mt-1 text-sm text-slate-500">
         Record income or expenses in Sri Lankan Rupees.
       </p>
