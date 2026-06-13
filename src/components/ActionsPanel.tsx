@@ -6,6 +6,7 @@ import type { Transaction } from "@/types/transaction";
 interface ActionsPanelProps {
   transactions: Transaction[];
   onClearAll: () => void;
+  userId: string;
 }
 
 function formatDate(dateStr: string): string {
@@ -49,7 +50,7 @@ function downloadCSV(transactions: Transaction[]) {
   URL.revokeObjectURL(url);
 }
 
-export function ActionsPanel({ transactions, onClearAll }: ActionsPanelProps) {
+export function ActionsPanel({ transactions, onClearAll, userId }: ActionsPanelProps) {
   function handleClearAll() {
     const confirmed = window.confirm(
       "⚠️ Clear all data?\n\nThis will permanently delete all your transactions from local storage. This action cannot be undone."
@@ -59,7 +60,10 @@ export function ActionsPanel({ transactions, onClearAll }: ActionsPanelProps) {
     }
   }
 
+  const webhookUrl = typeof window !== 'undefined' ? `${window.location.origin}/api/sms-webhook` : '';
+
   return (
+    <div className="space-y-6">
     <section className="rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 p-6 shadow-sm dark:shadow-xl dark:backdrop-blur-md">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Actions</h2>
       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -91,6 +95,43 @@ export function ActionsPanel({ transactions, onClearAll }: ActionsPanelProps) {
           Clear All Data
         </button>
       </div>
-    </section>
+      </section>
+
+      {/* SMS Webhook Automation Settings */}
+      <section className="rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 p-6 shadow-sm dark:shadow-xl dark:backdrop-blur-md">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Phone Automation Webhook</h2>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Configure an Apple Shortcut or Android Tasker to forward bank SMS alerts directly to your database.
+        </p>
+
+        <div className="mt-5 space-y-4">
+          <div>
+            <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Webhook URL</label>
+            <div className="mt-1 flex items-center gap-2">
+              <code className="flex-1 block overflow-x-auto rounded-lg bg-slate-100 dark:bg-slate-800 p-2.5 text-sm font-mono text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                {webhookUrl}
+              </code>
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Your User ID</label>
+            <div className="mt-1 flex items-center gap-2">
+              <code className="flex-1 block rounded-lg bg-slate-100 dark:bg-slate-800 p-2.5 text-sm font-mono text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
+                {userId}
+              </code>
+            </div>
+          </div>
+          <div className="rounded-xl bg-indigo-50 dark:bg-indigo-500/10 p-4 border border-indigo-100 dark:border-indigo-500/20">
+            <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-300">How to set up:</h4>
+            <ol className="mt-2 list-decimal list-inside text-sm text-indigo-800 dark:text-indigo-200 space-y-1">
+              <li>Create a new Apple Shortcut Automation for "When I get a message from [Bank Name]".</li>
+              <li>Add a "Get contents of URL" action.</li>
+              <li>Paste the Webhook URL above. Change method to POST.</li>
+              <li>Add a JSON body with: <br/><code className="bg-indigo-100 dark:bg-indigo-500/30 px-1 py-0.5 rounded text-xs">userId</code> = Your User ID above<br/><code className="bg-indigo-100 dark:bg-indigo-500/30 px-1 py-0.5 rounded text-xs">secret</code> = Your secret code (set WEBHOOK_SECRET in Vercel)<br/><code className="bg-indigo-100 dark:bg-indigo-500/30 px-1 py-0.5 rounded text-xs">smsText</code> = Shortcut Input</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

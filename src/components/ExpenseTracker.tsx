@@ -195,7 +195,7 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
 
       {currentView === "settings" && (
         <div className="max-w-2xl mx-auto space-y-6">
-          <ActionsPanel transactions={transactions} onClearAll={clearAllTransactions} />
+          <ActionsPanel transactions={transactions} onClearAll={clearAllTransactions} userId={userId} />
         </div>
       )}
     </div>
