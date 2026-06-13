@@ -323,7 +323,7 @@ export function SpendingInsights({
 
         {/* Top Spending Category */}
         <div className="mt-5">
-          <div className="rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-gradient-to-r dark:from-white/5 dark:to-transparent p-4">
+          <div className="rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/50 p-4">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400">
                 <Trophy className="h-4 w-4" />
