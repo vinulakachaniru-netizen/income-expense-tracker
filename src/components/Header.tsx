@@ -35,8 +35,11 @@ export function Header({
   }
 
   return (
-    <header className="rounded-2xl bg-teal px-6 py-8 text-white shadow-lg shadow-teal/20">
-      <div className="flex items-start justify-between gap-4">
+    <header className="relative overflow-hidden rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 px-6 py-8 text-white shadow-2xl">
+      {/* Subtle background glow */}
+      <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-teal/20 blur-[80px]" />
+      
+      <div className="relative flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-sm font-medium uppercase tracking-widest text-white/70">
             Sri Lanka

@@ -1,16 +1,20 @@
 export const CHART_COLORS = {
-  teal: "#006D77",
-  tealDark: "#005A63",
-  tealLight: "#83C5BE",
-  saffron: "#E8A838",
-  saffronLight: "#F4C86B",
-  saffronDark: "#C98B1E",
+  teal: "#14b8a6", /* Neon Teal */
+  tealDark: "#0f766e",
+  tealLight: "#ccfbf1",
+  saffron: "#f59e0b",
+  saffronLight: "#fef3c7",
+  saffronDark: "#b45309",
+  emerald: "#10b981",
+  cyan: "#06b6d4",
+  rose: "#f43f5e",
+  violet: "#8b5cf6",
 } as const;
 
 export const CATEGORY_COLORS: Record<string, string> = {
   Food: CHART_COLORS.teal,
   Transport: CHART_COLORS.saffron,
-  Rent: CHART_COLORS.tealDark,
-  Bills: CHART_COLORS.saffronLight,
-  Entertainment: CHART_COLORS.tealLight,
+  Rent: CHART_COLORS.violet,
+  Bills: CHART_COLORS.rose,
+  Entertainment: CHART_COLORS.cyan,
 };

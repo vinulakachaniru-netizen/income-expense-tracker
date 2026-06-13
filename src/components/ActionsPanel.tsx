@@ -60,9 +60,9 @@ export function ActionsPanel({ transactions, onClearAll }: ActionsPanelProps) {
   }
 
   return (
-    <section className="rounded-2xl border border-teal/10 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-800">Actions</h2>
-      <p className="mt-1 text-sm text-slate-500">
+    <section className="rounded-2xl border border-white/5 bg-white/5 p-6 shadow-xl backdrop-blur-md">
+      <h2 className="text-lg font-semibold text-white">Actions</h2>
+      <p className="mt-1 text-sm text-slate-400">
         Manage your expense data and export records.
       </p>
 
@@ -73,7 +73,7 @@ export function ActionsPanel({ transactions, onClearAll }: ActionsPanelProps) {
           type="button"
           onClick={() => downloadCSV(transactions)}
           disabled={transactions.length === 0}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-teal bg-teal px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-teal-dark active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-teal/50 bg-teal/20 px-4 py-2.5 text-sm font-semibold text-teal-light shadow-sm transition-all hover:bg-teal/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Download className="h-4 w-4 shrink-0" strokeWidth={2} />
           Download Statement (CSV)
@@ -85,7 +85,7 @@ export function ActionsPanel({ transactions, onClearAll }: ActionsPanelProps) {
           type="button"
           onClick={handleClearAll}
           disabled={transactions.length === 0}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 shadow-sm transition-all hover:border-red-300 hover:bg-red-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-2.5 text-sm font-semibold text-rose-400 shadow-sm transition-all hover:border-rose-500/40 hover:bg-rose-500/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Trash2 className="h-4 w-4 shrink-0" strokeWidth={2} />
           Clear All Data

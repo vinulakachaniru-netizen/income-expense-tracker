@@ -30,14 +30,14 @@ export function TransactionHistory({
   );
 
   return (
-    <section className="rounded-2xl border border-teal/10 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-white/5 bg-white/5 p-6 shadow-xl backdrop-blur-md">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-slate-800">
+          <h2 className="text-lg font-semibold text-white">
             Transaction History
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-400">
             {transactions.length === 0
               ? "No transactions yet. Add your first one above."
               : `${transactions.length} transaction${transactions.length === 1 ? "" : "s"} recorded.`}
@@ -49,7 +49,7 @@ export function TransactionHistory({
       {transactions.length > 0 && (
         <div className="relative mt-4">
           <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"
             strokeWidth={2}
           />
           <input
@@ -58,7 +58,7 @@ export function TransactionHistory({
             placeholder="Search by description…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-9 pr-4 text-sm text-slate-800 placeholder:text-slate-400 focus:border-teal focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal/20 transition-colors"
+            className="w-full rounded-xl border border-white/10 bg-slate-900/50 py-2.5 pl-9 pr-4 text-sm text-white placeholder:text-slate-500 focus:border-teal focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-teal/20 transition-colors"
           />
         </div>
       )}
@@ -71,7 +71,7 @@ export function TransactionHistory({
       )}
 
       {filtered.length > 0 && (
-        <ul className="mt-6 divide-y divide-slate-100">
+        <ul className="mt-6 divide-y divide-white/5">
           {filtered.map((transaction) => {
             const Icon = getCategoryIcon(transaction.category);
             const isIncome = transaction.type === "income";
@@ -83,17 +83,17 @@ export function TransactionHistory({
               >
                 <div
                   className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                    isIncome ? "bg-emerald-50 text-emerald-600" : "bg-teal/10 text-teal"
+                    isIncome ? "bg-emerald-500/10 text-emerald-400" : "bg-teal/20 text-teal-light"
                   }`}
                 >
                   <Icon className="h-5 w-5" strokeWidth={2} />
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium text-slate-800">
+                  <p className="truncate font-medium text-white">
                     {transaction.description}
                   </p>
-                  <p className="mt-0.5 text-sm text-slate-500">
+                  <p className="mt-0.5 text-sm text-slate-400">
                     {transaction.category} · {formatDate(transaction.date)}
                   </p>
                 </div>
@@ -101,7 +101,7 @@ export function TransactionHistory({
                 <div className="flex items-center gap-3">
                   <p
                     className={`whitespace-nowrap text-sm font-semibold ${
-                      isIncome ? "text-emerald-600" : "text-slate-800"
+                      isIncome ? "text-emerald-400" : "text-white"
                     }`}
                   >
                     {isIncome ? "+" : "-"}
@@ -111,7 +111,7 @@ export function TransactionHistory({
                     type="button"
                     onClick={() => onDelete(transaction.id)}
                     aria-label={`Delete ${transaction.description}`}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-rose-500/10 hover:text-rose-400"
                   >
                     <Trash2 className="h-4 w-4" strokeWidth={2} />
                   </button>

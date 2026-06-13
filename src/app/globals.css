@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f8fafb;
-  --foreground: #1e293b;
-  --teal: #006d77;
-  --teal-dark: #005a63;
-  --teal-light: #e6f3f4;
-  --saffron: #e8a838;
-  --saffron-light: #f4c86b;
+  --background: #0b1120; /* Very dark slate, almost black */
+  --foreground: #f1f5f9; /* Slate 100 */
+  --teal: #14b8a6; /* Neon Teal */
+  --teal-dark: #0f766e;
+  --teal-light: #ccfbf1;
+  --saffron: #f59e0b;
+  --saffron-light: #fef3c7;
+  
+  /* Additional Neon Accents */
+  --emerald: #10b981;
+  --cyan: #06b6d4;
+  --rose: #f43f5e;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-teal: var(--teal);
@@ -18,6 +23,9 @@
   --color-teal-light: var(--teal-light);
   --color-saffron: var(--saffron);
   --color-saffron-light: var(--saffron-light);
+  --color-emerald: var(--emerald);
+  --color-cyan: var(--cyan);
+  --color-rose: var(--rose);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

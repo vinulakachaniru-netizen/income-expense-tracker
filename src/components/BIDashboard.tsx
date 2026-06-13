@@ -56,7 +56,7 @@ function BudgetSettingsModal({ budgets, onSave, onClose }: BudgetModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl"
+        className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-slate-900 p-6 shadow-2xl backdrop-blur-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -68,12 +68,12 @@ function BudgetSettingsModal({ budgets, onSave, onClose }: BudgetModalProps) {
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal/10 text-teal">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal/20 text-teal-light">
             <Settings2 className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="font-semibold text-slate-800">Category Budgets</h3>
-            <p className="text-xs text-slate-500">Set a monthly limit per category</p>
+            <h3 className="font-semibold text-white">Category Budgets</h3>
+            <p className="text-xs text-slate-400">Set a monthly limit per category</p>
           </div>
         </div>
 
@@ -84,11 +84,11 @@ function BudgetSettingsModal({ budgets, onSave, onClose }: BudgetModalProps) {
                 className="h-3 w-3 shrink-0 rounded-full"
                 style={{ backgroundColor: CATEGORY_COLORS[cat] }}
               />
-              <label className="w-28 shrink-0 text-sm font-medium text-slate-700">
+              <label className="w-28 shrink-0 text-sm font-medium text-slate-300">
                 {cat}
               </label>
               <div className="relative flex-1">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-500">
                   Rs.
                 </span>
                 <input
@@ -100,7 +100,7 @@ function BudgetSettingsModal({ budgets, onSave, onClose }: BudgetModalProps) {
                   onChange={(e) =>
                     setDraft((d) => ({ ...d, [cat]: e.target.value }))
                   }
-                  className="w-full rounded-lg border border-slate-200 py-2 pl-9 pr-3 text-sm text-slate-800 outline-none focus:border-teal focus:ring-2 focus:ring-teal/20"
+                  className="w-full rounded-lg border border-white/10 bg-slate-900/50 py-2 pl-9 pr-3 text-sm text-white placeholder:text-slate-500 outline-none focus:border-teal focus:ring-2 focus:ring-teal/20"
                 />
               </div>
             </div>
@@ -133,14 +133,14 @@ function VarianceRow({ category, spent, budget }: VarianceRowProps) {
   const variance = budget - spent;
 
   return (
-    <div className="rounded-xl border border-slate-100 bg-slate-50/60 p-4">
+    <div className="rounded-xl border border-white/5 bg-slate-900/50 p-4">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
           <span
             className="h-3 w-3 shrink-0 rounded-full"
             style={{ backgroundColor: CATEGORY_COLORS[category] }}
           />
-          <span className="font-medium text-slate-700 text-sm">{category}</span>
+          <span className="font-medium text-slate-200 text-sm">{category}</span>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           {overspent ? (
@@ -161,7 +161,7 @@ function VarianceRow({ category, spent, budget }: VarianceRowProps) {
 
       {/* Progress bar */}
       <div className="mt-2.5">
-        <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-white/5">
           <div
             className={`h-full rounded-full transition-all duration-500 ${
               overspent ? "bg-red-500" : pct >= 80 ? "bg-amber-400" : "bg-teal"
@@ -190,8 +190,8 @@ function MonthlyTooltip({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-lg text-xs">
-      <p className="mb-2 font-semibold text-slate-700">{label}</p>
+    <div className="rounded-xl border border-white/10 bg-slate-900 p-3 shadow-lg text-xs">
+      <p className="mb-2 font-semibold text-white">{label}</p>
       {payload.map((p) => (
         <p key={p.name} style={{ color: p.fill }}>
           {p.name}: {formatLKR(p.value)}
@@ -250,14 +250,14 @@ export function BIDashboard({
         />
       )}
 
-      <section className="rounded-2xl border border-teal/10 bg-white p-6 shadow-sm">
+      <section className="rounded-2xl border border-white/5 bg-white/5 p-6 shadow-xl backdrop-blur-md">
         {/* Header */}
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-slate-800">
+            <h2 className="text-lg font-semibold text-white">
               BI Dashboard
             </h2>
-            <p className="mt-0.5 text-sm text-slate-500">
+            <p className="mt-0.5 text-sm text-slate-400">
               Monthly comparison, budget variance &amp; trends.
             </p>
           </div>
@@ -266,12 +266,12 @@ export function BIDashboard({
         {/* ── 1. Monthly Comparison ─────────────────────────────────────────── */}
         <div className="mt-6">
           <div className="mb-4 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/10 text-teal">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal/20 text-teal-light">
               <BarChart3 className="h-4 w-4" strokeWidth={2} />
             </div>
-            <h3 className="text-sm font-semibold text-slate-700">
+            <h3 className="text-sm font-semibold text-white">
               Monthly Comparison —{" "}
-              <span className="font-normal text-slate-500">
+              <span className="font-normal text-slate-400">
                 {monthly.lastMonthLabel} vs {monthly.thisMonthLabel}
               </span>
             </h3>
@@ -283,20 +283,20 @@ export function BIDashboard({
               {
                 label: monthly.lastMonthLabel,
                 value: monthly.overall.lastMonth,
-                color: "text-slate-700",
-                bg: "bg-slate-50",
+                color: "text-slate-300",
+                bg: "bg-slate-900/50",
               },
               {
                 label: monthly.thisMonthLabel,
                 value: monthly.overall.thisMonth,
-                color: "text-teal",
-                bg: "bg-teal/5",
+                color: "text-teal-light",
+                bg: "bg-teal/20",
               },
               {
                 label: "Change",
                 value: Math.abs(diff),
-                color: isHigher ? "text-red-500" : "text-emerald-600",
-                bg: isHigher ? "bg-red-50" : "bg-emerald-50",
+                color: isHigher ? "text-rose-400" : "text-emerald-400",
+                bg: isHigher ? "bg-rose-500/10" : "bg-emerald-500/10",
                 prefix: isHigher ? "▲ " : "▼ ",
                 suffix: diffPct !== null ? ` (${diffPct}%)` : "",
               },
@@ -305,7 +305,7 @@ export function BIDashboard({
                 key={item.label}
                 className={`rounded-xl p-3 ${item.bg}`}
               >
-                <p className="text-xs text-slate-500">{item.label}</p>
+                <p className="text-xs text-slate-400">{item.label}</p>
                 <p className={`mt-1 text-sm font-bold ${item.color}`}>
                   {"prefix" in item ? item.prefix : ""}
                   {formatLKR(item.value)}
@@ -322,7 +322,7 @@ export function BIDashboard({
                 barCategoryGap="25%"
                 barGap={4}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                 <XAxis
                   dataKey="category"
                   axisLine={false}
@@ -372,10 +372,10 @@ export function BIDashboard({
         <div className="mt-8">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
                 <Settings2 className="h-4 w-4" strokeWidth={2} />
               </div>
-              <h3 className="text-sm font-semibold text-slate-700">
+              <h3 className="text-sm font-semibold text-white">
                 Category Budget Variance
               </h3>
             </div>
@@ -391,7 +391,7 @@ export function BIDashboard({
           </div>
 
           {budgetedCategories.length === 0 ? (
-            <div className="flex h-28 flex-col items-center justify-center gap-2 rounded-xl bg-slate-50 text-sm text-slate-400">
+            <div className="flex h-28 flex-col items-center justify-center gap-2 rounded-xl bg-slate-900/50 text-sm text-slate-400">
               <Settings2 className="h-5 w-5 opacity-40" />
               <p>Click &ldquo;Set Budgets&rdquo; to add category limits</p>
             </div>
@@ -412,36 +412,33 @@ export function BIDashboard({
         {/* ── 3. Future Forecast ───────────────────────────────────────────── */}
         <div className="mt-8">
           <div className="mb-4 flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-50 text-violet-500">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400">
               <Sparkles className="h-4 w-4" strokeWidth={2} />
             </div>
-            <h3 className="text-sm font-semibold text-slate-700">Future Forecast</h3>
+            <h3 className="text-sm font-semibold text-white">Future Forecast</h3>
           </div>
 
           {forecast ? (
-            <div className="overflow-hidden rounded-xl border border-violet-100 bg-gradient-to-br from-violet-50 to-white">
+            <div className="overflow-hidden rounded-xl border border-violet-500/20 bg-gradient-to-br from-violet-900/20 to-transparent">
               {/* Main predicted number */}
               <div className="px-5 pt-5">
                 <p className="text-xs font-medium uppercase tracking-widest text-violet-400">
                   Predicted {forecast.currentMonthName} Month-End Spend
                 </p>
-                <p className="mt-1.5 text-3xl font-bold tracking-tight text-slate-800">
+                <p className="mt-1.5 text-3xl font-bold tracking-tight text-white">
                   {formatLKR(forecast.predictedMonthEndSpend)}
                 </p>
 
                 {/* Confidence badge */}
                 <div className="mt-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold
-                  bg-white border
+                  bg-slate-900/50 border
                   " style={{
                     borderColor:
-                      forecast.confidence === "high" ? "#bbf7d0" :
-                      forecast.confidence === "medium" ? "#fde68a" : "#fecaca",
+                      forecast.confidence === "high" ? "rgba(22, 163, 74, 0.2)" :
+                      forecast.confidence === "medium" ? "rgba(217, 119, 6, 0.2)" : "rgba(220, 38, 38, 0.2)",
                     color:
-                      forecast.confidence === "high" ? "#16a34a" :
-                      forecast.confidence === "medium" ? "#d97706" : "#dc2626",
-                    backgroundColor:
-                      forecast.confidence === "high" ? "#f0fdf4" :
-                      forecast.confidence === "medium" ? "#fffbeb" : "#fef2f2",
+                      forecast.confidence === "high" ? "#4ade80" :
+                      forecast.confidence === "medium" ? "#fbbf24" : "#f87171",
                   }}>
                   <span className="h-1.5 w-1.5 rounded-full" style={{
                     backgroundColor:
@@ -455,11 +452,11 @@ export function BIDashboard({
 
               {/* Progress: current vs predicted */}
               <div className="mt-4 px-5">
-                <div className="flex justify-between text-xs text-slate-500 mb-1.5">
+                <div className="flex justify-between text-xs text-slate-400 mb-1.5">
                   <span>Spent so far this month</span>
-                  <span>{formatLKR(forecast.currentMonthSpend)}</span>
+                  <span className="text-white">{formatLKR(forecast.currentMonthSpend)}</span>
                 </div>
-                <div className="h-2.5 w-full overflow-hidden rounded-full bg-violet-100">
+                <div className="h-2.5 w-full overflow-hidden rounded-full bg-violet-500/10">
                   <div
                     className="h-full rounded-full bg-violet-500 transition-all duration-700"
                     style={{
@@ -469,13 +466,13 @@ export function BIDashboard({
                     }}
                   />
                 </div>
-                <p className="mt-1 text-right text-xs text-slate-400">
+                <p className="mt-1 text-right text-xs text-slate-500">
                   {forecast.daysRemainingInMonth} day{forecast.daysRemainingInMonth !== 1 ? "s" : ""} remaining in month
                 </p>
               </div>
 
               {/* Stats row */}
-              <div className="mt-4 grid grid-cols-3 divide-x divide-violet-100 border-t border-violet-100">
+              <div className="mt-4 grid grid-cols-3 divide-x divide-violet-500/10 border-t border-violet-500/10">
                 {[
                   {
                     label: "Avg Daily Spend",
@@ -492,7 +489,7 @@ export function BIDashboard({
                 ].map((stat) => (
                   <div key={stat.label} className="px-4 py-3 text-center">
                     <p className="text-xs text-slate-400">{stat.label}</p>
-                    <p className="mt-0.5 text-sm font-bold text-slate-700">{stat.value}</p>
+                    <p className="mt-0.5 text-sm font-bold text-white">{stat.value}</p>
                   </div>
                 ))}
               </div>
@@ -505,8 +502,8 @@ export function BIDashboard({
               </p>
             </div>
           ) : (
-            <div className="flex h-28 flex-col items-center justify-center gap-2 rounded-xl border border-violet-100 bg-violet-50 text-sm text-slate-400">
-              <Sparkles className="h-5 w-5 text-violet-300" />
+            <div className="flex h-28 flex-col items-center justify-center gap-2 rounded-xl border border-violet-500/20 bg-violet-900/20 text-sm text-slate-400">
+              <Sparkles className="h-5 w-5 text-violet-400" />
               <p>Add expenses over multiple months to unlock the forecast</p>
             </div>
           )}
