@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     const arrayBuffer = await file.arrayBuffer();
     const base64Data = Buffer.from(arrayBuffer).toString("base64");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
     const prompt = `
 You are an expert financial assistant. Look at this receipt or invoice and extract the transaction details.
