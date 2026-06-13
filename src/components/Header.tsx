@@ -27,10 +27,18 @@ export function Header({
   const supabase = createClient();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [greeting, setGreeting] = useState("Hello");
 
   useEffect(() => {
     setMounted(true);
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting("Good Morning");
+    else if (hour < 18) setGreeting("Good Afternoon");
+    else setGreeting("Good Evening");
   }, []);
+
+  const userName = userEmail.split('@')[0].replace(/[^a-zA-Z]/g, ' ');
+  const capitalizedName = userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
 
   const budgetPercent =
     budget !== null && budget > 0
@@ -49,8 +57,8 @@ export function Header({
       
       <div className="relative flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-sm font-medium uppercase tracking-widest text-slate-500 dark:text-white/70">
-            Sri Lanka
+          <p className="text-sm font-medium tracking-wide text-slate-500 dark:text-white/70">
+            {greeting}, {capitalizedName}
           </p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
             Lanka-Expense
