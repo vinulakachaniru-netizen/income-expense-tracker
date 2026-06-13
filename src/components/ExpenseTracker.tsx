@@ -8,9 +8,7 @@ import { Header } from "@/components/Header";
 import { SpendingInsights } from "@/components/SpendingInsights";
 import { SummaryCards } from "@/components/SummaryCards";
 import { TransactionHistory } from "@/components/TransactionHistory";
-import { useBudget } from "@/hooks/useBudget";
-import { useCategoryBudgets } from "@/hooks/useCategoryBudgets";
-import { useSavingsGoal } from "@/hooks/useSavingsGoal";
+import { useUserSettings } from "@/hooks/useUserSettings";
 import {
   createTransactionFromForm,
   useTransactions,
@@ -24,7 +22,7 @@ interface ExpenseTrackerProps {
 export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
   const {
     transactions,
-    hydrated,
+    hydrated: txHydrated,
     addTransaction,
     deleteTransaction,
     clearAllTransactions,
@@ -32,11 +30,17 @@ export function ExpenseTracker({ userId, userEmail }: ExpenseTrackerProps) {
     balance,
   } = useTransactions(userId);
 
-  const { budget, setBudget } = useBudget();
-  const { goal, setGoal } = useSavingsGoal();
-  const { budgets, setCategoryBudget } = useCategoryBudgets();
+  const {
+    budget,
+    setBudget,
+    budgets,
+    setCategoryBudget,
+    goal,
+    setGoal,
+    hydrated: settingsHydrated,
+  } = useUserSettings(userId);
 
-  if (!hydrated) {
+  if (!txHydrated || !settingsHydrated) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-teal border-t-transparent" />
