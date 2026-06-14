@@ -187,7 +187,8 @@ export function getLast7DaysSpending(
   const dayMap = Object.fromEntries(days.map((d) => [d.date, d]));
   for (const t of transactions) {
     if (t.type !== "expense") continue;
-    const entry = dayMap[t.date];
+    const txDateKey = toDateKey(new Date(t.date));
+    const entry = dayMap[txDateKey];
     if (entry) entry.amount += t.amount;
   }
   return days;

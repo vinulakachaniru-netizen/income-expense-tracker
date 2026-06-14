@@ -227,7 +227,7 @@ export function SpendingInsights({
 
   const filtered = filterTransactions(transactions, dateRange, customFrom, customTo);
   const categoryData = getExpensesByCategory(filtered);
-  const dailyData = getLast7DaysSpending(filtered);
+  const dailyData = getLast7DaysSpending(transactions);
   const topCategory = getTopSpendingCategory(filtered);
   const hasExpenses = categoryData.length > 0;
   const hasDailySpending = dailyData.some((d) => d.amount > 0);
