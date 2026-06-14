@@ -53,7 +53,7 @@ function downloadCSV(transactions: Transaction[]) {
 export function ActionsPanel({ transactions, onClearAll, userId }: ActionsPanelProps) {
   function handleClearAll() {
     const confirmed = window.confirm(
-      "⚠️ Clear all data?\n\nThis will permanently delete all your transactions from local storage. This action cannot be undone."
+      "⚠️ Clear all data?\n\nThis will permanently delete all your transactions from the database. This action cannot be undone."
     );
     if (confirmed) {
       onClearAll();
