@@ -9,6 +9,7 @@ import type { Transaction } from "@/types/transaction";
 interface TransactionHistoryProps {
   transactions: Transaction[];
   onDelete: (id: string) => void;
+  hideHeader?: boolean;
 }
 
 function formatDate(dateStr: string): string {
@@ -22,6 +23,7 @@ function formatDate(dateStr: string): string {
 export function TransactionHistory({
   transactions,
   onDelete,
+  hideHeader = false,
 }: TransactionHistoryProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -29,24 +31,30 @@ export function TransactionHistory({
     t.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const containerClasses = hideHeader 
+    ? "w-full" 
+    : "rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 p-6 shadow-sm dark:shadow-xl dark:backdrop-blur-md";
+
   return (
-    <section className="rounded-2xl border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 p-6 shadow-sm dark:shadow-xl dark:backdrop-blur-md">
+    <section className={containerClasses}>
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Transaction History
-          </h2>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {transactions.length === 0
-              ? "No transactions yet. Add your first one above."
-              : `${transactions.length} transaction${transactions.length === 1 ? "" : "s"} recorded.`}
-          </p>
+      {!hideHeader && (
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Transaction History
+            </h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              {transactions.length === 0
+                ? "No transactions yet. Add your first one above."
+                : `${transactions.length} transaction${transactions.length === 1 ? "" : "s"} recorded.`}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Search bar */}
-      {transactions.length > 0 && (
+      {transactions.length > 0 && !hideHeader && (
         <div className="relative mt-4">
           <Search
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500"
@@ -71,7 +79,7 @@ export function TransactionHistory({
       )}
 
       {filtered.length > 0 && (
-        <ul className="mt-6 divide-y divide-slate-100 dark:divide-white/5">
+        <ul className={`divide-y divide-slate-100 dark:divide-white/5 ${!hideHeader ? "mt-6" : ""}`}>
           {filtered.map((transaction) => {
             const Icon = getCategoryIcon(transaction.category);
             const isIncome = transaction.type === "income";
